@@ -1,3 +1,4 @@
 * {
   background-color: red;
+  box-decoration-break: slice;
 }
