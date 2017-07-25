@@ -1,7 +1,5 @@
-function component() {
-  var element = document.createElement('div');
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './components/App.jsx';
 
-  return element;
-}
-
-document.body.appendChild(component());
+ReactDOM.render(<App />, document.getElementById('root'));

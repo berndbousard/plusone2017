@@ -1,16 +1,26 @@
 const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin'); //Extract static CSS file
+
 const HtmlWebpackPlugin = require('html-webpack-plugin'); //Inject JS into index.html
+const HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
+  template: './src/index.html', //Use src index.html as the template
+  filename: 'index.html',
+  title: 'PlusOne Amsterdam',
+  inject: 'body' //Inject JS before body tag
+});
+
+
 
 const config = {
   entry: [`./src/js/script.js`, `./src/css/style.css`],
 
   output: {
-    path: path.resolve(__dirname, `dist`),
+    path: path.resolve(`dist`),
     filename: `js/[name].js`
   },
 
   module: {
+
     rules:[
       {
         test: /\.css$/,
@@ -21,16 +31,24 @@ const config = {
             'postcss-loader'
           ]
         }),
-      }
+      },
+
+      {
+        test: /\.(js|jsx?)$/,
+        exclude: /node_modules/,
+        use: [
+          {
+            loader: `babel-loader`
+          }
+        ]
+      },
     ]
   },
 
   plugins:
     [
       new ExtractTextPlugin("css/style.css"),
-      new HtmlWebpackPlugin({
-        title: `PlusOne Amsterdam`
-      }),
+      HtmlWebpackPluginConfig
     ]
 
 };
