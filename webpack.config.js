@@ -1,4 +1,5 @@
 const path = require('path');
+
 const ExtractTextPlugin = require('extract-text-webpack-plugin'); //Extract static CSS file
 
 const HtmlWebpackPlugin = require('html-webpack-plugin'); //Inject JS into index.html
@@ -8,8 +9,6 @@ const HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
   title: 'PlusOne Amsterdam',
   inject: 'body' //Inject JS before body tag
 });
-
-
 
 const config = {
   entry: [`./src/js/script.js`, `./src/css/style.css`],
@@ -50,7 +49,7 @@ const config = {
       new ExtractTextPlugin("css/style.css"),
       HtmlWebpackPluginConfig
     ]
-
 };
+
 
 module.exports = config;
