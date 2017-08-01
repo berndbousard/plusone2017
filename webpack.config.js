@@ -4,51 +4,55 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin'); //Extract stat
 
 const HtmlWebpackPlugin = require('html-webpack-plugin'); //Inject JS into index.html
 const HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
-  template: './src/index.html', //Use src index.html as the template
-  filename: 'index.html',
-  title: 'PlusOne Amsterdam',
-  inject: 'body' //Inject JS before body tag
+	template: './src/index.html', //Use src index.html as the template
+	filename: 'index.html',
+	title: 'PlusOne Amsterdam',
+	inject: 'body' //Inject JS before body tag
 });
 
 const config = {
-  entry: [`./src/js/script.js`, `./src/css/style.css`],
+	entry: ['./src/js/script.js', './src/css/style.css'],
 
-  output: {
-    path: path.resolve(`dist`),
-    filename: `js/[name].js`
-  },
+	output: {
+		path: path.resolve('dist'),
+		filename: 'js/[name].js'
+	},
 
-  module: {
+	devServer: {
+		historyApiFallback: true
+	},
 
-    rules:[
-      {
-        test: /\.css$/,
-        use: ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          use: [
-            { loader: 'css-loader', options: { importLoaders: 1 } },
-            'postcss-loader'
-          ]
-        }),
-      },
+	module: {
 
-      {
-        test: /\.(js|jsx?)$/,
-        exclude: /node_modules/,
-        use: [
-          {
-            loader: `babel-loader`
-          }
-        ]
-      },
-    ]
-  },
+		rules:[
+			{
+				test: /\.css$/,
+				use: ExtractTextPlugin.extract({
+					fallback: 'style-loader',
+					use: [
+						{ loader: 'css-loader', options: { importLoaders: 1 } },
+						'postcss-loader'
+					]
+				}),
+			},
 
-  plugins:
-    [
-      new ExtractTextPlugin("css/style.css"),
-      HtmlWebpackPluginConfig
-    ]
+			{
+				test: /\.(js|jsx?)$/,
+				exclude: /node_modules/,
+				use: [
+					{
+						loader: 'babel-loader'
+					}
+				]
+			},
+		]
+	},
+
+	plugins:
+				[
+					new ExtractTextPlugin('css/style.css'),
+					HtmlWebpackPluginConfig
+				]
 };
 
 

@@ -1,5 +1,11 @@
-* {
-  background-color: red;
-  -webkit-box-decoration-break: slice;
-          box-decoration-break: slice;
-}
+ body {
+	 background-color: white;
+ }
+
+ .about {
+	background-color: rgb(212, 212, 212);
+ }
+
+ .home {
+
+ }
