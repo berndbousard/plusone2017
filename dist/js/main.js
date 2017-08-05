@@ -11286,7 +11286,7 @@ Link.contextTypes = {
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(97);
-module.exports = __webpack_require__(229);
+(function webpackMissingModule() { throw new Error("Cannot find module \"./src/css/style.css\""); }());
 
 
 /***/ }),
@@ -25836,12 +25836,12 @@ var Home = function Home() {
 			_react2.default.createElement(
 				'h1',
 				null,
-				'Dit is de home pagina'
+				'PlusOne Amsterdam'
 			),
 			_react2.default.createElement(
 				_reactRouterDom.Link,
 				{ to: '/about' },
-				'ga naar de about pagina'
+				'About'
 			)
 		)
 	);
@@ -25878,24 +25878,18 @@ var About = function About() {
 			_react2.default.createElement(
 				'h1',
 				null,
-				'Dit is de about pagina'
+				'About'
 			),
 			_react2.default.createElement(
 				_reactRouterDom.Link,
 				{ to: '/home' },
-				'ga naar de home pagina'
+				'home'
 			)
 		)
 	);
 };
 
 exports.default = About;
-
-/***/ }),
-/* 229 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
 
 /***/ })
 /******/ ]);

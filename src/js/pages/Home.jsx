@@ -5,8 +5,8 @@ const Home = () => {
 	return (
 		<section className="home">
 			<header>
-				<h1>Dit is de home pagina</h1>
-				<Link to="/about">ga naar de about pagina</Link>
+				<h1>PlusOne Amsterdam</h1>
+				<Link to="/about">About</Link>
 			</header>
 		</section>
 	);
