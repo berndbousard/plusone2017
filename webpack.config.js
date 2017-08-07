@@ -14,7 +14,7 @@ const config = {
 	entry: [path.resolve('src/js/script.js'), path.resolve('src/css/style.css')],
 
 	output: {
-		path: path.resolve('dist'),
+		path: path.resolve('server/dist'),
 		filename: 'js/[name].js'
 	},
 
