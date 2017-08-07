@@ -15,7 +15,8 @@ const config = {
 
 	output: {
 		path: path.resolve('server/dist'),
-		filename: 'js/[name].js'
+		filename: 'js/[name].js',
+		publicPath: ''
 	},
 
 	devServer: {
@@ -23,12 +24,12 @@ const config = {
 	},
 
 	resolve: {
-    extensions: [
-      `.js`,
-      `.jsx`,
-      `.css`
-    ]
-  },
+		extensions: [
+			'.js',
+			'.jsx',
+			'.css'
+		]
+	},
 
 	module: {
 
