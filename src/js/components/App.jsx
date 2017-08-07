@@ -1,6 +1,8 @@
 import React from 'react';
 import {BrowserRouter as Router, Route, Switch, Redirect} from 'react-router-dom';
-import {Home, About} from '../pages';
+import {Home, About} from '../pages/';
+//import Home from '../pages/Home.jsx';
+//import About from '../pages/About.jsx';
 
 const App = () => {
 	return (

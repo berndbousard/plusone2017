@@ -11,7 +11,7 @@ const HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
 });
 
 const config = {
-	entry: ['./src/js/script.js', './src/css/style.css'],
+	entry: [path.resolve('src/js/script.js'), path.resolve('src/css/style.css')],
 
 	output: {
 		path: path.resolve('dist'),
@@ -21,6 +21,14 @@ const config = {
 	devServer: {
 		historyApiFallback: true
 	},
+
+	resolve: {
+    extensions: [
+      `.js`,
+      `.jsx`,
+      `.css`
+    ]
+  },
 
 	module: {
 
