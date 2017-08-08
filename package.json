@@ -35,7 +35,6 @@
   },
   "dependencies": {
     "forever": "^0.15.3",
-    "glob": "^7.1.2",
     "hapi": "^16.5.2",
     "inert": "^4.2.1"
   }
