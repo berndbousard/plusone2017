@@ -1,6 +1,7 @@
 const path = require('path');
 const hapi = require('hapi');
 const inert = require('inert');
+const mongojs = require('mongojs');
 require('dotenv').config(); //Use .env for local variables
 const {PORT, URL} = process.env;
 
@@ -16,7 +17,10 @@ const server = new hapi.Server({
 
 server.connection({port: PORT});
 
-server.register(inert, (err) => {
+//Connetion with DDB
+server.app.db = mongojs('plusone', ['users']);
+
+server.register([inert, require(`./routes/users`)], (err) => {
 	if(err) throw err;
 });
 

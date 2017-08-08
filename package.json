@@ -4,7 +4,6 @@
   "description": "portfolio website of plusone",
   "author": "Bernd Bousard",
   "license": "MIT",
-
   "main": "server/server.js",
   "scripts": {
     "dev": "node_modules/.bin/webpack --config webpack.config.js --watch & ./node_modules/.bin/eslint ./src/js/* --fix & node_modules/.bin/webpack-dev-server --content-base ./dist/",
@@ -15,8 +14,6 @@
   "engines": {
     "node": "6.11.1"
   },
-
-  
   "devDependencies": {
     "babel-cli": "^6.24.1",
     "babel-core": "^6.25.0",
@@ -40,9 +37,13 @@
     "webpack-dev-server": "^2.6.1"
   },
   "dependencies": {
+    "boom": "^5.2.0",
     "dotenv": "^4.0.0",
     "forever": "^0.15.3",
     "hapi": "^16.5.2",
-    "inert": "^4.2.1"
+    "inert": "^4.2.1",
+    "joi": "^10.6.0",
+    "mongojs": "^2.4.1",
+    "uuid": "^3.1.0"
   }
 }
