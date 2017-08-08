@@ -18,28 +18,7 @@ server.register(inert, (err) => {
 	if(err) throw err;
 });
 
-// server.route({
-// 	method: 'GET',
-// 	path: '/{param*}',
-// 	handler: {
-// 		directory: {
-// 			path: path.join(__dirname, 'dist'),
-// 			listing: false,
-// 			index: true
-// 		}
-// 	}
-// });
-//
-// // return index.html for everything else
-// server.ext('onPostHandler', (request, reply) => {
-// 	const response = request.response;
-// 	if (response.isBoom && response.output.statusCode === 404) {
-// 		return reply.file('app/static/index.html');
-// 	}
-// 	return reply.continue();
-// });
-
-// Static Assets
+// static assets
 server.route({
 	method: 'GET',
 	path: '/{param*}',
@@ -52,7 +31,7 @@ server.route({
 	}
 });
 
-// return index.html for everything else
+// if page not found - return the index page
 server.ext('onPostHandler', (request, reply) => {
 	const response = request.response;
 	if (response.isBoom && response.output.statusCode === 404) {
@@ -61,13 +40,6 @@ server.ext('onPostHandler', (request, reply) => {
 	return reply.continue();
 });
 
-// server.route({
-// 	method: 'GET',
-// 	path: '/{path*}',
-// 	handler: {
-// 		file: 'index.html'
-// 	}
-// });
 
 server.start((err) => {
 	if(err) throw err;
