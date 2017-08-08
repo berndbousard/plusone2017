@@ -1,6 +1,8 @@
 const path = require('path');
 const hapi = require('hapi');
 const inert = require('inert');
+require('dotenv').config(); //Use .env for local variables
+const {PORT, URL} = process.env;
 
 const server = new hapi.Server({
 	connections: {
@@ -12,7 +14,10 @@ const server = new hapi.Server({
 	}
 });
 
-server.connection({ port:3000, host: 'localhost' });
+server.connection({
+	port: PORT,
+	host: URL
+});
 
 server.register(inert, (err) => {
 	if(err) throw err;
