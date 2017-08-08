@@ -14,10 +14,7 @@ const server = new hapi.Server({
 	}
 });
 
-server.connection({
-	port: PORT,
-	host: URL
-});
+server.connection({port: PORT});
 
 server.register(inert, (err) => {
 	if(err) throw err;
