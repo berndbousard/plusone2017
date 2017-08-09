@@ -3,8 +3,10 @@ const joi = require(`joi`);
 joi.objectId = require(`joi-objectid`)(joi);
 const {pick, omit} = require(`lodash`);
 const {User} = require(`mongoose`).models;
+const path = require(`path`);
+const fs = require(`fs`);
 
-const basePath = `/api/users`;
+const basePath = `/api/images`;
 
 module.exports = [
 
@@ -62,24 +64,25 @@ module.exports = [
 					abortEarly: false
 				},
 				payload: {
-					'email': joi.string().required(),
-					'password': joi.string().required()
+					image: joi.any().required()
 				}
+			},
+
+			payload: {
+				output: `stream`,
+				parse: true,
+				allow: `multipart/form-data`
 			}
 		},
 		handler: function(request, reply) {
 
-			const data = pick(request.payload, [`email`, `password`]);
-			const user = new User(data);
+			const {image} = request.payload;
+			const imageName = Math.random().toString(36).substr(2, 12); //Create random string
+			const imageExtention = path.extname(image.hapi.filename);
+			const imageLocation = path.join(__dirname, `../../dist/uploads`, `${imageName}${imageExtention}`);
 
-			user.save()
-				.then(user => {
-					user = omit(user.toJSON(), [`__v`]);
-					return reply(user);
-				})
-				.catch(() => {
-					return reply(boom.badRequest());
-				});
+			const imageFile = fs.createWriteStream(imageLocation);
+			image.pipe(imageFile);
 
 		}
 	},

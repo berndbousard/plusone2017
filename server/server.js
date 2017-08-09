@@ -1,17 +1,16 @@
-const path = require('path');
-const hapi = require('hapi');
-const inert = require('inert');
-const jwt = require('jsonwebtoken');
-const pluginHandler = require('./lib/pluginHandler');
+const path = require(`path`);
+const hapi = require(`hapi`);
+const jwt = require(`jsonwebtoken`);
+const pluginHandler = require(`./lib/pluginHandler`);
 
-require('dotenv').config(); //Use .env for local variables
+require(`dotenv`).config(); //Use .env for local variables
 const {PORT, URL, SECRET} = process.env;
 
 const server = new hapi.Server({
 	connections: {
 		routes: {
 			files: {
-				relativeTo: path.join(__dirname, 'dist')
+				relativeTo: path.join(__dirname, `dist`)
 			}
 		}
 	}

@@ -13,24 +13,24 @@ mongoose.connect(MONGO_URL, {useMongoClient: true}); //url in de .env file
 
 module.exports.register = (server, options, next) => {
 
-  const base = path.resolve(__dirname, `models`);
+	const base = path.resolve(__dirname, `models`);
 
-  fs.readdirSync(base).forEach(f => {
+	fs.readdirSync(base).forEach(f => {
 
-    if(!isValidName(f)) return;
+		if(!isValidName(f)) return;
 
-    const ff = path.resolve(base, f);
-    const {schema, name = path.basename(f, `.js`)} = require(ff);
+		const ff = path.resolve(base, f);
+		const {schema, name = path.basename(f, `.js`)} = require(ff);
 
-    mongoose.model(name, schema);
+		mongoose.model(name, schema);
 
-  });
+	});
 
-  next();
+	next();
 
 };
 
 module.exports.register.attributes = {
-  name: `mongoose`,
-  version: `0.1.0`
+	name: `mongoose`,
+	version: `0.1.0`
 };

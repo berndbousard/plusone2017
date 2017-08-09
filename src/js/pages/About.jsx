@@ -7,7 +7,10 @@ const About = () => {
 			<header>
 				<h1>About</h1>
 				<Link to="/home">home</Link>
+
 			</header>
+
+			<img src="./uploads/p8apz3tpjp5c.jpg"></img>
 		</section>
 	);
 };
