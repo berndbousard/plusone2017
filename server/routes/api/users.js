@@ -2,38 +2,29 @@ const boom = require('boom');
 const joi = require('joi');
 joi.objectId = require('joi-objectid')(joi);
 const lodash = require('lodash');
+const {User} = require(`mongoose`).models;
 
 const basePath = `/api/users`;
 
-//Syntax for new hapi plugin
-exports.register = function(server, options, next) {
+module.exports = [
 
-  const db = server.app.db;
-
-  //fetch all
-  server.route({
+  {
     method: 'GET',
     path: `${basePath}`,
     handler: function(request, reply) {
-      db.users.find((err, res) => {
 
-        if(err){
-          return reply(boom.boomify(`Internal MongoDB error`));
-        }
-
-        if(lodash.isEmpty(res)){
-          return reply(boom.notFound(`No users found`));
-        }
-
-        reply(res);
-
-      });
+      User.find()
+        .then(users => {
+          return reply({users});
+        })
+        .catch(({errmsg}) => {
+          console.log(errmsg);
+          return reply(boom.badRequest());
+        });
     }
-  });
+  },
 
-  //fetch one
-  server.route({
-
+  {
     method: 'GET',
     path: `/api/users/{id}`,
     config: {
@@ -45,29 +36,21 @@ exports.register = function(server, options, next) {
     },
     handler: function(request, reply) {
 
-      db.users.findOne({
-        _id: request.params.id
-      }, (err, res) => {
-
-        console.log(request.params.id);
-
-        if(err){
-          return reply(boom.boomify(`Internal MongoDB error`))
-        }
-
-        if(!res){
-          return reply(boom.notFound(`No user found`));
-        }
-
-        reply(res);
-
-      });
+      User.findOne()
+        .then(user => {
+          if(!user){
+            return reply(boom.notFound());
+          }
+          return reply(user);
+        })
+        .catch(({errmsg}) => {
+          console.log(errmsg);
+          return reply(boom.badRequest());
+        });
     }
+  },
 
-  });
-
-  //post
-  server.route({
+  {
     method: 'POST',
     path: `${basePath}`,
     config: {
@@ -81,23 +64,24 @@ exports.register = function(server, options, next) {
     },
     handler: function(request, reply) {
 
-      const user = request.payload;
+      const data = request.payload;
+      const user = new User(data);
 
-      db.users.save(user, (err, result) => {
-
-        if(err){
-          return reply(boom.boomify(`Internal MongoDB error`));
-        }
-
-        reply(user);
-
-      });
+      user.save()
+        .then((user) => {
+          return reply(user);
+        })
+        .catch(({errmsg}) => {
+          console.log(errmsg);
+          return reply(boom.badRequest());
+        });
 
     }
-  });
+  }
 
-  //patch
-  server.route({
+  /*,
+
+  {
     method: 'PATCH',
     path: `${basePath}/{id}`,
     config: {
@@ -129,15 +113,13 @@ exports.register = function(server, options, next) {
         }
 
         reply().code(204);
-
-
       }
     );
     }
-  })
+  },
 
-  //delete
-  server.route({
+
+  {
     method: 'DELETE',
     path: `${basePath}/{id}`,
     config: {
@@ -166,12 +148,7 @@ exports.register = function(server, options, next) {
 
 
     }
-  });
+  }
 
-  return next();
-}
-
-exports.register.attributes = {
-  name: `routes-users`,
-  version: `1.0.0`
-}
+  */
+]
