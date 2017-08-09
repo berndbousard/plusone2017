@@ -1,7 +1,7 @@
 const boom = require('boom');
 const joi = require('joi');
 joi.objectId = require('joi-objectid')(joi);
-const lodash = require('lodash');
+const {pick, omit} = require('lodash');
 const {User} = require(`mongoose`).models;
 
 const basePath = `/api/users`;
@@ -10,76 +10,83 @@ module.exports = [
 
   {
     method: 'GET',
-    path: `${basePath}`,
-    handler: function(request, reply) {
-
-      User.find()
-        .then(users => {
-          return reply({users});
-        })
-        .catch(({errmsg}) => {
-          console.log(errmsg);
-          return reply(boom.badRequest());
-        });
-    }
-  },
-
-  {
-    method: 'GET',
-    path: `/api/users/{id}`,
+    path: `${basePath}/{id?}`,
     config: {
       validate: {
         params: {
           'id': joi.objectId()
         }
+      },
+      auth: {
+        strategy: `token`
       }
     },
     handler: function(request, reply) {
 
-      User.findOne()
-        .then(user => {
-          if(!user){
-            return reply(boom.notFound());
-          }
-          return reply(user);
-        })
-        .catch(({errmsg}) => {
-          console.log(errmsg);
-          return reply(boom.badRequest());
-        });
+      const {id} = request.params;
+      const projection = `-__v`;
+
+      if(!id){
+
+        User.find({}, projection)
+          .then(users => {
+            return reply({users});
+          })
+          .catch(({errmsg}) => {
+            console.log(errmsg);
+            return reply(boom.badRequest());
+          });
+
+      } else {
+
+        User.find({_id: id}, projection).limit(1)
+          .then(user => {
+            if(!user){
+              return reply(boom.notFound());
+            }
+            return reply(user);
+          })
+          .catch(({errmsg}) => {
+            console.log(errmsg);
+            return reply(boom.badRequest());
+          });
+
+      }
     }
   },
 
   {
     method: 'POST',
-    path: `${basePath}`,
+    path: basePath,
     config: {
       validate: {
+        options: {
+          abortEarly: false
+        },
         payload: {
-          'name': joi.string().required(),
-          'age': joi.number().required(),
-          'job': joi.string().required()
+          'email': joi.string().required(),
+          'password': joi.string().required()
         }
       }
     },
     handler: function(request, reply) {
 
-      const data = request.payload;
+      const data = pick(request.payload, [`email`, `password`]);
       const user = new User(data);
+      const projection = `-__v`;
 
       user.save()
-        .then((user) => {
+        .then(user => {
+          user = omit(user.toJSON(), [`__v`]);
           return reply(user);
         })
-        .catch(({errmsg}) => {
+        .catch((e) => {
           console.log(errmsg);
           return reply(boom.badRequest());
         });
 
     }
-  }
-
-  /*,
+  },
 
   {
     method: 'PATCH',
@@ -90,34 +97,26 @@ module.exports = [
           'id': joi.objectId()
         },
         payload: {
-          'name': joi.string().optional(),
-          'age': joi.number().optional(),
-          'job': joi.string().optional()
+          'email': joi.string().optional(),
+          'password': joi.string().optional()
         }
       }
     },
     handler: function(request, reply) {
-      db.users.update({
-        _id: request.params.id
-      }, {
-        $set: request.payload
-      }, function (err, result){
 
-        if(err){
-          return reply(boom.boomify(`Interal MongoDB error`));
-        }
+      const {id} = request.params;
+      const data = pick(request.payload, [`email`, `password`]);
 
-
-        if(lodash.isEmpty(result)){
-          return reply(Boom.notFound());
-        }
-
-        reply().code(204);
-      }
-    );
+      User.findByIdAndUpdate(id, { $set: data }, { new: true })
+        .then(user => {
+          user = omit(user.toJSON(), [`__v`]);
+          return reply(user);
+        })
+        .catch(({errmsg}) => {
+          return reply(boom.badRequest())
+        });
     }
   },
-
 
   {
     method: 'DELETE',
@@ -131,24 +130,18 @@ module.exports = [
     },
     handler: function(request, reply) {
 
+      const {id} = request.params;
 
-      db.users.remove({
-        _id: request.params.id
-      }, function(err, result) {
-
-        if(err) reply(boom.boomify(`Interal MongoDB error`));
-
-        if(lodash.isEmpty(result)){
-          return reply(boom.notFound());
-        }
-
-        reply().code(204);
-
-      });
-
+      User.findByIdAndRemove(id)
+        .then(user => {
+          user = omit(user.toJSON(), [`__v`]);
+          return reply(user);
+        })
+        .catch(({errmsg}) => {
+          console.log(errmsg);
+          return reply(boom.badRequest());
+        });
 
     }
   }
-
-  */
 ]

@@ -22,6 +22,7 @@ module.exports.register = (server, options, next) => {
   });
 
   server.register(require(`inert`), pluginHandler);
+  server.register(require(`hapi-auth-jwt`), pluginHandler);
 
   next();
 
