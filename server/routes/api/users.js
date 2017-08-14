@@ -6,6 +6,17 @@ const {User} = require(`mongoose`).models;
 
 const basePath = `/api/users`;
 
+// config: {
+// 	validate: {
+// 		params: {
+// 			'id': joi.objectId()
+// 		}
+// 	},
+// 	auth: {
+// 		strategy: `token`
+// 	}
+// }
+
 module.exports = [
 
 	{
@@ -16,9 +27,6 @@ module.exports = [
 				params: {
 					'id': joi.objectId()
 				}
-			},
-			auth: {
-				strategy: `token`
 			}
 		},
 		handler: function(request, reply) {
