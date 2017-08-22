@@ -7,8 +7,8 @@
   "main": "server/server.js",
   "scripts": {
     "dev": "node_modules/.bin/webpack --config webpack.config.js --watch & ./node_modules/.bin/eslint ./src/js/* --fix & node_modules/.bin/webpack-dev-server --content-base ./dist/",
-    "node": "nodemon . & node_modules/.bin/webpack --config webpack.config.js --watch",
-    "pro": "node_modules/.bin/webpack --config webpack.config.js -p",
+    "node": "nodemon . & cross-env NODE_ENV=development node_modules/.bin/webpack --config webpack.config.js --watch",
+    "pro": "cross-env NODE_ENV=production node_modules/.bin/webpack --config webpack.config.js -p",
     "start": "node_modules/.bin/webpack --config webpack.config.js -p & forever ."
   },
   "engines": {
@@ -25,11 +25,13 @@
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
+    "cross-env": "^5.0.5",
     "css-loader": "^0.28.4",
     "eslint": "^4.3.0",
     "eslint-plugin-react": "^7.1.0",
     "extract-text-webpack-plugin": "^3.0.0",
     "html-webpack-plugin": "^2.29.0",
+    "node-sass": "^4.5.3",
     "postcss-loader": "^2.0.6",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
@@ -37,6 +39,7 @@
     "sass-loader": "^6.0.6",
     "style-loader": "^0.18.2",
     "webpack": "^3.4.1",
+    "webpack-config-utils": "^2.3.0",
     "webpack-dev-server": "^2.6.1"
   },
   "dependencies": {
@@ -52,7 +55,6 @@
     "jsonwebtoken": "^7.4.2",
     "lodash": "^4.17.4",
     "mongoose": "^4.11.6",
-    "mongoose-bcrypt": "^1.5.0",
-    "node-sass": "^4.5.3"
+    "mongoose-bcrypt": "^1.5.0"
   }
 }

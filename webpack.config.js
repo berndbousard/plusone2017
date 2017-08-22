@@ -1,6 +1,9 @@
 const path = require(`path`);
+const webpack = require(`webpack`);
 
 const ExtractTextPlugin = require(`extract-text-webpack-plugin`); //Extract static CSS file
+const {getIfUtils, removeEmpty} = require(`webpack-config-utils`);
+const {ifProduction} = getIfUtils(process.env.NODE_ENV);
 
 const HtmlWebpackPlugin = require(`html-webpack-plugin`); //Inject JS into index.html
 const HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
@@ -10,7 +13,9 @@ const HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
 	inject: `body` //Inject JS before body tag
 });
 
-const config = {
+module.exports = {
+
+	//Webpack2 syntax, now it can take arguments
 	entry: [path.resolve(`src/js/script.js`), path.resolve(`src/css/style.scss`)],
 
 	output: {
@@ -70,11 +75,30 @@ const config = {
 	},
 
 	plugins:
-				[
+				removeEmpty([
 					new ExtractTextPlugin(`css/style.css`),
-					HtmlWebpackPluginConfig
-				]
+					HtmlWebpackPluginConfig,
+
+					ifProduction(
+						new webpack.DefinePlugin({
+							'process.env.NODE_ENV': JSON.stringify(`production`)
+						})
+					),
+
+					ifProduction(
+						new webpack.optimize.UglifyJsPlugin({
+							beautify: false,
+							comments: false,
+							compress: {screw_ie8: true},
+							mangle: {screw_ie8: true}
+						})
+					),
+
+					ifProduction(
+						new webpack.LoaderOptionsPlugin({
+							minimize: true,
+							debug: false
+						})
+					)
+				])
 };
-
-
-module.exports = config;
