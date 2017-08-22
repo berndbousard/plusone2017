@@ -1,22 +1,22 @@
-const path = require('path');
+const path = require(`path`);
 
-const ExtractTextPlugin = require('extract-text-webpack-plugin'); //Extract static CSS file
+const ExtractTextPlugin = require(`extract-text-webpack-plugin`); //Extract static CSS file
 
-const HtmlWebpackPlugin = require('html-webpack-plugin'); //Inject JS into index.html
+const HtmlWebpackPlugin = require(`html-webpack-plugin`); //Inject JS into index.html
 const HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
-	template: './src/index.html', //Use src index.html as the template
-	filename: 'index.html',
-	title: 'PlusOne Amsterdam',
-	inject: 'body' //Inject JS before body tag
+	template: `./src/index.html`, //Use src index.html as the template
+	filename: `index.html`,
+	title: `PlusOne Amsterdam`,
+	inject: `body` //Inject JS before body tag
 });
 
 const config = {
-	entry: [path.resolve('src/js/script.js'), path.resolve('src/css/style.css')],
+	entry: [path.resolve(`src/js/script.js`), path.resolve(`src/css/style.scss`)],
 
 	output: {
-		path: path.resolve('server/dist'),
-		filename: 'js/[name].js',
-		publicPath: ''
+		path: path.resolve(`server/dist`),
+		filename: `js/[name].js`,
+		publicPath: ``
 	},
 
 	devServer: {
@@ -25,9 +25,9 @@ const config = {
 
 	resolve: {
 		extensions: [
-			'.js',
-			'.jsx',
-			'.css'
+			`.js`,
+			`.jsx`,
+			`.css`
 		]
 	},
 
@@ -37,11 +37,23 @@ const config = {
 			{
 				test: /\.css$/,
 				use: ExtractTextPlugin.extract({
-					fallback: 'style-loader',
+					fallback: `style-loader`,
 					use: [
-						{ loader: 'css-loader', options: { importLoaders: 1 } },
-						'postcss-loader'
+						{ loader: `css-loader`, options: { importLoaders: 1 } },
+						`postcss-loader`
 					]
+				}),
+			},
+
+			{
+				test: /\.scss$/,
+				use: ExtractTextPlugin.extract({
+					use: [{
+						loader: `css-loader`
+					}, {
+						loader: `sass-loader`
+					}],
+					fallback: `style-loader`
 				}),
 			},
 
@@ -50,7 +62,7 @@ const config = {
 				exclude: /node_modules/,
 				use: [
 					{
-						loader: 'babel-loader'
+						loader: `babel-loader`
 					}
 				]
 			},
@@ -59,7 +71,7 @@ const config = {
 
 	plugins:
 				[
-					new ExtractTextPlugin('css/style.css'),
+					new ExtractTextPlugin(`css/style.css`),
 					HtmlWebpackPluginConfig
 				]
 };
